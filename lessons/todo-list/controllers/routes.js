@@ -79,7 +79,75 @@ router.post("/", (req, res) => {
 })
 
 // TODO: Update a todo
+// TODO: pass id value as a param; pass updated todo thru the body; read the file; run thru each iterable; check if post_id matches param id; reassign the db at the index to what comes from body; save the file
+router.put("/:id", (req, res) => {
+    try {
+        const id = Number(req.params.id)
+    
+        const todo = req.body
+        console.log(todo)
+    
+        let result
+        fs.readFile(dbPath, (err, data) => {
+            if (err) throw err
+            const db = JSON.parse(data)
+            
+            db.forEach((element, index) => {
+                if (element.todo_id === id) {
+                    db[index] = todo
+                    result = todo
+                    fs.writeFile(dbPath, JSON.stringify(db), err => console.log(err))
+                    }
+                })
+    
+            result ? res.status(200).json({
+                status: `ID: ${id} succesfully modified`,
+                object: result
+                })
+                : res.status(404).json({
+                    status: `ID: ${id} not found`
+                })
+            })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: `Error: ${err}`
+        })
+    }
+})
 
 // TODO: Delete a todo
+
+// TODO: pass the id as a param; read the file; filter to match the post_id to the id from the param but don't return what matches!; return what doesn't match; write to file
+
+router.delete("/:id", (req, res) => {
+    
+    try {
+        const id = Number(req.params.id)
+        fs.readFile(dbPath, (err, data) => {
+            if (err) throw err
+            const db = JSON.parse(data)
+            const filteredDb = db.filter(element => {
+                if (element.todo_id !== id) {
+                    return element
+                }
+            })
+            
+            fs.writeFile(dbPath, JSON.stringify(filteredDb), (err) => console.log(err))
+            
+            res.status(200).json({
+                status: `ID: ${id} successfully deleted`,
+                filteredDb
+            })
+        })
+        
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: `Error: ${err}`
+        })
+    }
+})
+
 
 module.exports = router

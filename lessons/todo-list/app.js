@@ -17,7 +17,7 @@ function logTime(req, res, next) {
 app.use(express.json());
 // Access from a form, extra thing paul did
 // TODO extra paul thing 
-app.use(express.urlencoded());
+{app.use(express.urlencoded({extended:true}));}
 // addding in cors
 app.use(cors())
 // This will serve the static html page that is inside the public folder
