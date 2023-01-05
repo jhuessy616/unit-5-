@@ -1,55 +1,55 @@
 
 
-router.put("/:id", (req, res) => {
-    try {
-      let { id } = req.params.id
-    // const id = req.query.id;
-    fs.readFile(dbPath, (err, data) => {
-      if (err) throw err;
-      const db = JSON.parse(data);
-      db.forEach((item, index, array) => {
-        if (item.todo_id == id) {
-          array[index] = req.body
-        }
-      })
+// router.put("/:id", (req, res) => {
+//     try {
+//       let { id } = req.params.id
+//     // const id = req.query.id;
+//     fs.readFile(dbPath, (err, data) => {
+//       if (err) throw err;
+//       const db = JSON.parse(data);
+//       db.forEach((item, index, array) => {
+//         if (item.todo_id == id) {
+//           array[index] = req.body
+//         }
+//       })
       
-      fs.writeFile(dbPath, JSON.stringify(db), () => null);
-    });
-      res.status(201).json({
-        status: "item updated",
-        updateditem: req.body
-    });
-  } catch (err) {
-    res.status(500).json({
-      error: `${err}`,
-    });
-  }
-});
-// TODO: Delete a todo
+//       fs.writeFile(dbPath, JSON.stringify(db), () => null);
+//     });
+//       res.status(201).json({
+//         status: "item updated",
+//         updateditem: req.body
+//     });
+//   } catch (err) {
+//     res.status(500).json({
+//       error: `${err}`,
+//     });
+//   }
+// });
+// // TODO: Delete a todo
 
-router.delete("/:id", (req, res) => {
+// router.delete("/:id", (req, res) => {
     
-    // console.log(req.params.id)
-    // console.log(db)
-    try {
-        let result
-        let { id } = req.params
-        fs.readFile(dbPath, (err, data) => {
-            if (err) throw err;
-            const db = JSON.parse(data);
-            result = db.filter(i => i.todo_id != id)
-            fs.writeFile(dbPath, JSON.stringify(result), (err) => console.log(err))
-            res.status(200).json({
-                status: `Deleted item at id: ${id}`,
-               result
-            })
-        })
-    } catch (err) {
-          res.status(500).json({
-            error: `${err}`
-        })
-    }
-})
+//     // console.log(req.params.id)
+//     // console.log(db)
+//     try {
+//         let result
+//         let { id } = req.params
+//         fs.readFile(dbPath, (err, data) => {
+//             if (err) throw err;
+//             const db = JSON.parse(data);
+//             result = db.filter(i => i.todo_id != id)
+//             fs.writeFile(dbPath, JSON.stringify(result), (err) => console.log(err))
+//             res.status(200).json({
+//                 status: `Deleted item at id: ${id}`,
+//                result
+//             })
+//         })
+//     } catch (err) {
+//           res.status(500).json({
+//             error: `${err}`
+//         })
+//     }
+// })
 
 
 
